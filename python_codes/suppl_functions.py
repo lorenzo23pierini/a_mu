@@ -27,12 +27,17 @@ def k_1(n):
 def funct_rho_0(z, n, p, param):
     return -pi*k_0(n)*r(z, p, param)
 
-def funct_e0(z, n, p, min_limit=0, max_limit=inf, param='exp'):
-    expr = lambda x1: funct_rho_0(x1, n, p, param) / (x1 + 1) / (x1 + z)
-    int1 = quad(expr, min_limit, max_limit, limit=500, epsabs=1e-7)
-    return (1. - z)*int1[0] / pi  # , int1[1]/int[0]
+def test_funct_e0(z, n, p, min_limit=0., max_limit=inf, param='exp'):
+    expr = lambda x1: funct_rho_0(x1, n, p, param) / (x1 + 1.) / (x1 + z)
+    int1 = quad(expr, min_limit, max_limit, limit=500, epsabs=1e-8)
+    return int1
 
-def funct_epsilon_0(s, lambda1, n, p, min_limit=0, max_limit=inf, param='exp'):
+def funct_e0(z, n, p, min_limit=0., max_limit=inf, param='exp'):
+    expr = lambda x1: funct_rho_0(x1, n, p, param) / (x1 + 1.) / (x1 + z)
+    int1 = quad(expr, min_limit, max_limit, limit=500, epsabs=1e-8)
+    return (1. - z)*int1[0] / pi
+
+def funct_epsilon_0(s, lambda1, n, p, min_limit=0., max_limit=inf, param='exp'):
     return  (funct_e0(s/lambda1**2, n, p, min_limit, max_limit, param)
              - funct_e0(0, n, p, min_limit, max_limit, param))
 
@@ -45,18 +50,23 @@ def funct_f_part(x):
 def funct_rho_1(z, n, p, param):
     return k_1(n)*r(z, p, param)*funct_f_part(z)
 
-def funct_e1(z, n, p, min_limit=0, max_limit=inf, param='exp'):
-    expr = lambda x1: funct_rho_1(x1, n, p, param) / (x1 + 1) / (x1 + z)
-    int1 = quad(expr, min_limit, max_limit, limit=500, epsabs=1e-7)
+def test_funct_e1(z, n, p, min_limit=0., max_limit=inf, param='exp'):
+    expr = lambda x1: funct_rho_1(x1, n, p, param) / (x1 + 1.) / (x1 + z)
+    int1 = quad(expr, min_limit, max_limit, limit=500, epsabs=1e-8)
+    return int1
+
+def funct_e1(z, n, p, min_limit=0., max_limit=inf, param='exp'):
+    expr = lambda x1: funct_rho_1(x1, n, p, param) / (x1 + 1.) / (x1 + z)
+    int1 = quad(expr, min_limit, max_limit, limit=500, epsabs=1e-8)
     return (1. - z)*int1[0] / pi  # , int1[1]/int[0]
 
-def funct_epsilon_1(s, lambda1, n, p, min_limit=0, max_limit=inf, param='exp'):
+def funct_epsilon_1(s, lambda1, n, p, min_limit=0., max_limit=inf, param='exp'):
     return (funct_e1(s/lambda1**2, n, p, min_limit, max_limit, param) -
-            funct_e1(0, n, p, min_limit, max_limit, param))
+            funct_e1(0., n, p, min_limit, max_limit, param))
 
-def funct_epsilon(s, lambda1, n, p, min_limit=0, max_limit=inf, param='exp'):
+def funct_epsilon(s, lambda1, n, p, min_limit=0., max_limit=inf, param='exp'):
     return (funct_epsilon_0(s, lambda1, n, p, min_limit, max_limit, param)
             + funct_epsilon_1(s, lambda1, n, p, min_limit, max_limit, param))
 
-def funct_alpha_disp(s, lambda1, n, p, min_limit=0, max_limit=inf, param='exp'):
+def funct_alpha_disp(s, lambda1, n, p, min_limit=0., max_limit=inf, param='exp'):
     return 1./funct_epsilon(s, lambda1, n, p, min_limit, max_limit, param)
